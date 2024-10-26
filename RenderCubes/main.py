@@ -7,6 +7,8 @@ import itertools
 import numpy as np
 from mujoco import mjx
 
+from renderer import start_simulation
+
 xml = """
 <mujoco>
   <worldbody>
@@ -28,8 +30,11 @@ mj_data = mujoco.MjData(mj_model)
 mjx_model = mjx.put_model(mj_model)
 mjx_data = mjx.put_data(mj_model, mj_data)
 
+start_simulation('RLtest.xml')
+
 mjx_model = mjx.put_model(mj_model)
 mjx_data = mjx.put_data(mj_model, mj_data)
 
 print(mj_data.qpos, type(mj_data.qpos))
 print(mjx_data.qpos, type(mjx_data.qpos), mjx_data.qpos.devices())
+
