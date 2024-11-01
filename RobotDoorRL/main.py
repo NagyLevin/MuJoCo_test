@@ -2,12 +2,14 @@ import time
 import os
 import gym
 import pybullet_envs
-import numpy as np
+import gnumpy as np
 import datetime
 from torch.utils.tensorboard import SummaryWriter #for logging data
 import robosuite as suite
 # from robosuite_environment import RoboSuiteWrapper
 from robosuite.wrappers import GymWrapper
+from networks import ActorNetwork,CriticNetwork
+from  buffer import ReplayBuffer
 
 
 if __name__ == '__main__':
@@ -28,7 +30,7 @@ if __name__ == '__main__':
     )
     env = GymWrapper(env) #fits robosuite env into gym framework
 
-
-
-
-    env.close()
+    ###
+    critic_n = CriticNetwork([8],8);
+    actor_n = ActorNetwork([8],8)
+    replay_buffer = ReplayBuffer(8,[8],8)
