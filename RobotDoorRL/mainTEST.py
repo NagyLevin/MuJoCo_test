@@ -18,17 +18,21 @@ if __name__ == '__main__':
     env = suite.make(
         env_name,  # Environment
         robots=["Panda"],  # Use two Panda robots # type of robot
-        controller_configs=suite.load_controller_config(default_controller="JOINT_VELOCITY"),  # Controller #pass joint vel
+        controller_configs=suite.load_controller_config(default_controller="JOINT_VELOCITY"),
+        # Controller #pass joint vel
         # controller_configs=suite.load_controller_config(default_controller="OSC_POSE"),
         has_renderer=True,  # Enable rendering
-        use_camera_obs=False, # gives robots camera view as training data
-        horizon=300, #time it takes the robot to figure out a solution DEPENDS ON PROBLEM
+        use_camera_obs=False,  # gives robots camera view as training data
+        horizon=300,  # time it takes the robot to figure out a solution DEPENDS ON PROBLEM
         render_camera="frontview",  # "sideview",           # Camera view
         has_offscreen_renderer=True,  # No offscreen rendering
-        reward_shaping=True, #on false it only gives reward when the task is fulfilled maks learning harder
+        reward_shaping=True,  # on false it only gives reward when the task is fulfilled maks learning harder
         control_freq=20,  # Control frequency
+
     )
     env = GymWrapper(env) #fits robosuite env into gym framework
+
+
 
     actor_learning_rate=0.001
     critic_learning_rate = 0.001
@@ -48,8 +52,9 @@ if __name__ == '__main__':
 
     # training loop
     for i in range(n_games):
+        #agent.load_models()
         observation = env.reset()  # start a new sim
-        done = float
+        done = False
         score = 0
 
         while not done:

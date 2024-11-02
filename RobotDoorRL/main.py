@@ -53,7 +53,7 @@ agent.load_models()
 #training loop
 for i in range(n_games):
     observation = env.reset() #start a new sim
-    done = float
+    done = False
     score =0
 
     while not done:

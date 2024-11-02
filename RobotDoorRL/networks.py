@@ -50,7 +50,7 @@ class CriticNetwork(nn.Module): # gives all modules from torch
         T.save(self.state_dict(),self.checkpoint_file)
 
     def load_checkpoint(self):
-        self.load_state_dict(T.load(self.checkpoint_file,weights_only=True)) #weights_only=False
+        self.load_state_dict(T.load(self.checkpoint_file)) #weights_only=False
     ####critic network that decides if an action was good or bad
 
     ####actor network gets a state and ecides what to do with it
@@ -93,6 +93,6 @@ class ActorNetwork(nn.Module):
         T.save(self.state_dict(), self.checkpoint_file)
 
     def load_checkpoint(self):
-        self.load_state_dict(T.load(self.checkpoint_file,weights_only=True))
+        self.load_state_dict(T.load(self.checkpoint_file))
 
 ####actor network gets a state and ecides what to do with it
