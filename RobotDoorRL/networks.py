@@ -5,6 +5,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.distributions.normal import Normal
 import numpy as np
+import torch
 
 class CriticNetwork(nn.Module): # gives all modules from torch
 
@@ -37,6 +38,11 @@ class CriticNetwork(nn.Module): # gives all modules from torch
         self.to(self.device)
 
     def forward(self,state,action):
+
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        if isinstance(state, np.ndarray): #converting numpy to tensor
+            state = torch.from_numpy(state).float().to(device)
+
         action_value = self.fc1(T.cat([state,action],dim=1)) #running on Tcat
         action_value = F.relu(action_value)
         action_value = self.fc2(action_value)
@@ -80,6 +86,11 @@ class ActorNetwork(nn.Module):
         self.to(self.device)
 
     def forward(self,state):
+
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        if isinstance(state, np.ndarray): #converting numpy to tensor
+            state = torch.from_numpy(state).float().to(device)
+        #print(state)
         x = self.fc1(state)
         x = F.relu(x)
         x = self.fc2(x)
@@ -88,6 +99,7 @@ class ActorNetwork(nn.Module):
         x = T.tanh(self.output(x))
 
         return x
+
 
     def save_checkpoint(self):
         T.save(self.state_dict(), self.checkpoint_file)
