@@ -9,6 +9,10 @@ import numpy as np
 class CriticNetwork(nn.Module): # gives all modules from torch
 
     ####critic network that decides if an action was good or bad
+
+    #actor_path = os.path.join("tmp", "td3", "actor_td3") #create dirrectoris if they dont exist
+    #os.makedirs(os.path.dirname(actor_path), exist_ok=True)
+    #os.makedirs("tmp/td3", exist_ok=True) #create dirrectoris if they dont exist
     def __init__(self,input_dims, n_actions,fc1_dims=256,fc2_dims=128,name='critic',checkpoint_dir='tmp/td3',learning_rate=10e-3):
         super(CriticNetwork,self).__init__()
 
@@ -46,8 +50,7 @@ class CriticNetwork(nn.Module): # gives all modules from torch
         T.save(self.state_dict(),self.checkpoint_file)
 
     def load_checkpoint(self):
-        self.load_state_dict(T.load(self.checkpoint_file))
-
+        self.load_state_dict(T.load(self.checkpoint_file,weights_only=True)) #weights_only=False
     ####critic network that decides if an action was good or bad
 
     ####actor network gets a state and ecides what to do with it
@@ -90,6 +93,6 @@ class ActorNetwork(nn.Module):
         T.save(self.state_dict(), self.checkpoint_file)
 
     def load_checkpoint(self):
-        self.load_state_dict(T.load(self.checkpoint_file))
+        self.load_state_dict(T.load(self.checkpoint_file,weights_only=True))
 
 ####actor network gets a state and ecides what to do with it

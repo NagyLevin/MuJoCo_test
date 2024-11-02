@@ -10,10 +10,10 @@ from torch.utils.tensorboard import SummaryWriter #for logging data
 import robosuite as suite
 # from robosuite_environment import RoboSuiteWrapper
 from robosuite.wrappers import GymWrapper
-
+from td3_torch import Agent
 
 if __name__ == '__main__':
-    env_name = "DoorRobotRL"
+    env_name = "Door"
 
     env = suite.make(
         env_name,  # Environment
@@ -30,7 +30,38 @@ if __name__ == '__main__':
     )
     env = GymWrapper(env) #fits robosuite env into gym framework
 
+    actor_learning_rate=0.001
+    critic_learning_rate = 0.001
+    batch_size = 128
+    layer1_size=256
+    layer2_size=256
+
+    agent = Agent(actor_learning_rate=actor_learning_rate,critic_learning_rate=critic_learning_rate,tau=0.005,input_dims=env.observation_space.shape,
+                  env=env,n_actions=env.action_space.shape[0],layer1_size=layer1_size,layer2_size=layer2_size,batch_size=batch_size)
+
+    n_games = 3
+    best_score = 0
+    episode_identifier = f"0 - actor_learning_rate={actor_learning_rate} critic_learning_rate={critic_learning_rate} layer_1_size={layer1_size} layer_2_size={layer2_size}"
+    # for figuring aout whatlearning worked
+
+    agent.load_models()
+
+    # training loop
+    for i in range(n_games):
+        observation = env.reset()  # start a new sim
+        done = float
+        score = 0
+
+        while not done:
+            action = agent.choose_action(observation,validation=True)
+
+            next_observation, reward, done, info = env.step(action)
+            env.render()
+            score += reward
+            observation = next_observation
+            time.sleep(0.03) #slow down a bit
+
+        print(f"episode: {i} score {score}")
 
 
 
-    env.close()
